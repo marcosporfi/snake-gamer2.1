@@ -32,6 +32,10 @@ def wall_collision(snake_head):
     head_x, head_y = snake_head
     return head_x < 0 or head_x >= WINDOW_SIZE[0] or head_y < 0 or head_y >= WINDOW_SIZE[1]
 
+# Função para verificar colisão com o corpo da cobra (auto-colisão)
+def self_collision(snake_head):
+    return snake_head in snake_pos[1:]  # Verifica se a cabeça da cobra colide com qualquer segmento do corpo
+
 # Inicialização da cobrinha
 snake_pos = [(250, 250), (240, 250), (230, 250)]  # Cobrinha com 3 segmentos (posição centralizada)
 snake_direction = K_LEFT
@@ -132,8 +136,8 @@ while True:
         snake_pos[0] = (head_x + PIXEL_SIZE, head_y)
 
     # Verificando colisão com a parede
-    if wall_collision(snake_pos[0]):
-        restart_game()  # Reinicia o jogo se a cobrinha colidir com a parede
+    if wall_collision(snake_pos[0]) or self_collision(snake_pos[0]):
+        restart_game()  # Reinicia o jogo se a cobrinha colidir com a parede ou com ela mesma
 
     # Atualizando a última direção
     last_direction = snake_direction
